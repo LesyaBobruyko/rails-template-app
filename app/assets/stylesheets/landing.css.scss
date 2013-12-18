@@ -1,3 +1,70 @@
 // Place all the styles related to the landing controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+@import 'bootstrap';
+
+body {
+  background: #F1F1F1;
+}
+
+.slider-wrapper {
+  position: relative;
+}
+
+.slider {
+  position: relative;
+  overflow: hidden;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+.slide {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  float: left;
+  overflow: hidden;
+  div {
+    float: left;
+    img {
+      width: 100%;
+    }
+    &:not(.large) {
+      a:first-child img {
+        margin-bottom: 5.95%;
+      }
+    }
+  }
+}
+
+.previous, .next{
+  background: url('/assets/tray-s5e264b5cf7.png');
+  display: block;
+  width: 64px;
+  height: 64px;
+  position: absolute;
+  top: 50%;
+  margin-top: -32px;
+}
+.previous{
+  background-position: 0 -526px;
+  left: 0;
+  &:hover {
+    background-position: 0 -376px;
+  }
+}
+.next {
+  background-position: 0 -896px;
+  right: 0;
+  &:hover {
+    background-position: 0 -764px;
+  }
+}
+.hidden{
+  display: none;
+}
+
+
+

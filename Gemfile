@@ -15,6 +15,7 @@ gem 'haml-rails'
 
 gem 'bootstrap-sass', '~> 3.0.1.0.rc'
 
+gem 'underscore-rails'
 
 group :development do
   gem 'quiet_assets'
