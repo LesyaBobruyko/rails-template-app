@@ -18,7 +18,7 @@ $(function () {
         var visibleSlide = $('.slide:visible');
         var firstLiWidth = visibleSlide.outerWidth();
         var nextSlide = (isForward) ? visibleSlide.nextOrFirst() : visibleSlide.prevOrLast();
-        var list= visibleSlide.parent();
+        var list = visibleSlide.parent();
         list.css({height: list.height()});
         visibleSlide.css({position: 'absolute'});
         nextSlide.css({position: 'absolute', left: (isForward) ? firstLiWidth : -firstLiWidth}).removeClass('hidden');
@@ -32,11 +32,61 @@ $(function () {
             list.removeAttr('style')
         }});
     }
-    function regenerateSlides(){
-        if($('.hidden-xs').is(':not(:visible)')){
 
+    function regenerateSlides() {
+        var slider = $('.slider');
+        var testDiv = $("<div class='hidden-xs'>&nbsp</div>");
+        var visibleSlide = slider.find('li:visible');
+        visibleSlide.append(testDiv);
+        console.log(testDiv.is(':visible'));
+        var visibleDivs;
+        if (testDiv.is(':not(:visible)')) {
+            visibleDivs = 2;
         }
+        else {
+            testDiv.attr('class', 'hidden-sm');
+            if (testDiv.is(':not(:visible)')) {
+                visibleDivs = 3;
+            } else {
+                testDiv.attr('class', 'hidden-md');
+                if (testDiv.is(':not(:visible)')) {
+                    visibleDivs = 3;
+                } else {
+                    testDiv.attr('class', 'hidden-lg');
+                    if (testDiv.is(':not(:visible)')) {
+                        visibleDivs = 4;
+                    }
+                }
+            }
+        }
+        testDiv.remove();
+//        var visibleDivs = $('.slider div:visible').length;
+        console.log(visibleDivs);
+        //var amountOfDivs = ($('.large').is(':visible')) ? visibleDivs + 1 : visibleDivs;
+        var amountOfDivs = visibleDivs;
+        console.log(amountOfDivs);
+        var allDivs = $('.slider div:not(.large)');
+        var ul = $('<ul/>').addClass('slider');
+        var li = $('<li/>').addClass('slide');
+        li.html($('.slider .large'));
+        var divsForFirstLi = allDivs.splice(0, amountOfDivs - 1);
+        li.append(divsForFirstLi);
+        var regeneratedList = "<li class='slide hidden'>";
+        var allDivsLength = allDivs.length;
+        for (var i = 0; i < allDivsLength; i++) {
+            regeneratedList += allDivs[i].outerHTML;
+            if (i != 0 && i % amountOfDivs == 0 && i < allDivsLength - 1) {
+                regeneratedList += "</li><li class='slide hidden'>";
+            }
+        }
+        regeneratedList += "</li>";
+        ul.html(li).append(regeneratedList);
+        slider.html(ul.html());
+//        slider.find('.slide div:first-child:not(.large)').attr('class', 'col-xs-6 col-sm-4 col-lg-3').next().attr('class', 'col-xs-6 col-sm-4 col-lg-3').next().attr('class', 'col-sm-4 col-lg-3 hidden-xs').next().attr('class', 'col-lg-3 hidden-md hidden-xs hidden-sm');
+        slider.find('.slide:eq(0)').find('div:eq(0)').attr('class','col-xs-12 col-sm-8 col-lg-6').end().find('div:eq(1)').attr('class','col-sm-4 col-lg-3 hidden-xs').end().find('div:eq(2)').attr('class','hidden-md col-lg-3 hidden-xs hidden-sm');
+        slider.find('.slide:gt(0)').find('div:eq(0), div:eq(1)').attr('class','col-xs-6 col-sm-4 col-lg-3').end().find('div:eq(2)').attr('class','col-sm-4 col-lg-3 hidden-xs').end().find('div:eq(3)').attr('class','col-lg-3 hidden-md hidden-xs hidden-sm');
     }
+
     var lazyLayout = _.debounce(regenerateSlides, 300);
     $(window).resize(lazyLayout);
 });
