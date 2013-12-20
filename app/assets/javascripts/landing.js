@@ -35,40 +35,35 @@ $(function () {
 
     function regenerateSlides() {
         var slider = $('.slider'),
+            allDivs = slider.find('div'),
+            allDivsLength,
             testDiv = $("<span class='hidden-xs'>&nbsp</span>"),
             visibleSlide = slider.find('li:visible'),
-            amountOfDivs;
+            divsForFirstLi,
+            amountOfDivs,
+            regeneratedList = '';
         visibleSlide.append(testDiv);
-        if (testDiv.is(':not(:visible)')) {
+        if (testDiv.is(':hidden')) {
             amountOfDivs = 2;
         }
         else {
-            testDiv.attr('class', 'hidden-sm');
-            if (testDiv.is(':not(:visible)')) {
+            if (testDiv.attr('class', 'hidden-sm').is(':hidden') ||
+                testDiv.attr('class', 'hidden-md').is(':hidden')) {
                 amountOfDivs = 3;
-            } else {
-                testDiv.attr('class', 'hidden-md');
-                if (testDiv.is(':not(:visible)')) {
-                    amountOfDivs = 3;
-                } else {
-                    testDiv.attr('class', 'hidden-lg');
-                    if (testDiv.is(':not(:visible)')) {
-                        amountOfDivs = 4;
-                    }
-                }
+            } else if (testDiv.attr('class', 'hidden-lg').is(':hidden')) {
+                amountOfDivs = 4;
             }
         }
         testDiv.remove();
         console.log(amountOfDivs);
-        var allDivs = $('.slider div');
         var li = $('<li/>').addClass('slide');
-        var divsForFirstLi = allDivs.filter(':lt(' + (amountOfDivs - 1) + ')');
-        allDivs = allDivs.filter(':gt(' + (amountOfDivs-2) + ')');
+        divsForFirstLi = allDivs.filter(':lt(' + (amountOfDivs - 1) + ')');
+        allDivs = allDivs.filter(':gt(' + (amountOfDivs - 2) + ')');
         li.append(divsForFirstLi);
-        var regeneratedList = "<li class='slide hidden'>";
-        var allDivsLength = allDivs.length;
+        allDivsLength = allDivs.length;
+        regeneratedList += "<li class='slide hidden'>";
         for (var i = 0; i < allDivsLength; i++) {
-            if (i != 0 && i % amountOfDivs == 0) {
+            if (i % amountOfDivs == 0 && i != 0) {
                 regeneratedList += "</li><li class='slide hidden'>";
             }
             regeneratedList += allDivs[i].outerHTML;
