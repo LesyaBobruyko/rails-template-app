@@ -7,6 +7,7 @@ jQuery.fn.prevOrLast = function (selector) {
     return (prev.length) ? prev : this.nextAll(selector).last();
 }
 $(function () {
+    regenerateSlides();
     var sliderWorking = false;
     $('.next').click(move);
     $('.previous').click(move);
@@ -55,7 +56,6 @@ $(function () {
             }
         }
         testDiv.remove();
-        console.log(amountOfDivs);
         var li = $('<li/>').addClass('slide');
         divsForFirstLi = allDivs.filter(':lt(' + (amountOfDivs - 1) + ')');
         allDivs = allDivs.filter(':gt(' + (amountOfDivs - 2) + ')');
